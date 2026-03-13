@@ -27,8 +27,8 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between items-center">
           <div className="flex-shrink-0">
-            <a href="#home" className="flex items-center gap-2">
-              <img src="/logo.svg" alt="DreamBox Media" className="h-8 md:h-10 w-auto" />
+            <a href="#home" className="flex items-center justify-center gap-2">
+              <img src="/logo.svg" alt="DreamBox Media" className="h-8 md:h-10 w-auto block object-contain" />
               <span className="text-brand-red text-xl md:text-2xl font-bold tracking-tighter">DreamBox</span>
             </a>
           </div>

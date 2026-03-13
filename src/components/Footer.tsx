@@ -9,8 +9,8 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
           
           <div className="col-span-1 lg:col-span-1">
-            <a href="#home" className="mb-4 flex items-center gap-2 w-fit">
-              <img src="/logo.svg" alt="DreamBox Media" className="h-8 w-auto" />
+            <a href="#home" className="mb-4 flex items-center justify-center gap-2 w-fit">
+              <img src="/logo.svg" alt="DreamBox Media" className="h-8 w-auto block object-contain" />
               <span className="text-brand-red text-xl font-bold tracking-tighter">DreamBox</span>
             </a>
             <p className="text-gray-400 text-sm mb-6">Your Vision. Our Lens.</p>
