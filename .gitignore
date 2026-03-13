@@ -1,0 +1,27 @@
+# Dependencies
+node_modules/
+
+# Build
+dist/
+
+# Environment
+.env
+.env.local
+.env.production
+.env.*.local
+
+# Editor / OS
+.DS_Store
+*.log
+.idea/
+.vscode/
+
+# Wrangler
+.wrangler/
+
+# Large media (GitHub 100MB file limit) - add manually after clone or host on CDN
+public/commercials-bg.mp4
+public/videography-bg.mov
+public/drone-bg.mp4
+public/drone-loop.mp4
+public/strategic-video-marketing-bg.mov
