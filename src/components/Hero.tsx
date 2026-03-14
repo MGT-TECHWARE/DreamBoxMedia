@@ -5,7 +5,7 @@ import { useVideoConfig } from '../VideoConfig';
 export default function Hero() {
   const { droneLoop } = useVideoConfig();
   return (
-    <section id="home" className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section id="home" className="relative min-h-screen flex items-center pt-24 pb-12 sm:pt-20 sm:pb-0 overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 z-0 min-h-[100vh] min-w-full">
         <video
@@ -33,21 +33,21 @@ export default function Hero() {
             </span>
           </div>
           
-          <h1 className="text-6xl md:text-8xl lg:text-[10rem] font-bold tracking-tighter mb-8 leading-[0.9]">
+          <h1 className="text-4xl sm:text-5xl md:text-8xl lg:text-[10rem] font-bold tracking-tighter mb-6 md:mb-8 leading-[0.95]">
             Visuals that <br />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">inspire action.</span>
           </h1>
           
-          <p className="text-xl md:text-2xl text-gray-300 mb-12 max-w-2xl leading-relaxed font-light">
+          <p className="text-base sm:text-lg md:text-2xl text-gray-300 mb-8 md:mb-12 max-w-2xl leading-relaxed font-light">
             We are a full-service creative production partner turning ideas into captivating visuals for brands that want to stand out.
           </p>
           
-          <div className="flex flex-col sm:flex-row items-center gap-6">
-            <a href="#contact" className="group w-full sm:w-auto px-8 py-4 bg-brand-red text-white rounded-full text-lg font-semibold transition-all hover:bg-white hover:text-brand-black flex items-center justify-center gap-3">
+          <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-4 sm:gap-6">
+            <a href="#contact" className="group w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 bg-brand-red text-white rounded-full text-base sm:text-lg font-semibold transition-all hover:bg-white hover:text-brand-black flex items-center justify-center gap-3">
               Start a Project
               <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />
             </a>
-            <a href="#work" className="w-full sm:w-auto px-8 py-4 bg-transparent text-white rounded-full text-lg font-semibold transition-all hover:text-brand-red flex items-center justify-center gap-2">
+            <a href="#work" className="w-full sm:w-auto px-6 py-3.5 sm:px-8 sm:py-4 bg-transparent border border-white/30 text-white rounded-full text-base sm:text-lg font-semibold transition-all hover:text-brand-red hover:border-brand-red flex items-center justify-center gap-2">
               View Our Reel
             </a>
           </div>

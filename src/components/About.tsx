@@ -3,12 +3,12 @@ import { ArrowRight, Instagram } from 'lucide-react';
 
 export default function About() {
   return (
-    <section id="about" className="py-24 bg-brand-black relative overflow-hidden">
+    <section id="about" className="py-16 md:py-24 bg-brand-black relative overflow-hidden">
       {/* Subtle background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-red/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 md:gap-16 items-center">
           
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -34,16 +34,16 @@ export default function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <h2 className="text-sm font-bold text-brand-red tracking-widest uppercase mb-4">About Us</h2>
-            <h3 className="text-4xl md:text-5xl font-bold mb-6 leading-tight">
+            <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-5 md:mb-6 leading-tight">
               Your End-to-End <br/>
               <span className="text-transparent bg-clip-text bg-gradient-to-r from-white to-gray-500">Production Partner</span>
             </h3>
             
-            <p className="text-lg text-gray-300 mb-8 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-300 mb-6 md:mb-8 leading-relaxed">
               We help brands create powerful video content that captures attention, drives engagement, and delivers real results. From concept to final cut, we handle every detail so you can focus on what you do best.
             </p>
             
-            <p className="text-lg text-gray-400 mb-10 leading-relaxed">
+            <p className="text-base sm:text-lg text-gray-400 mb-8 md:mb-10 leading-relaxed">
               Whether you need a high-end commercial, ongoing social media content, or comprehensive event coverage, our team of creative professionals is dedicated to telling your story with clarity and impact.
             </p>
 

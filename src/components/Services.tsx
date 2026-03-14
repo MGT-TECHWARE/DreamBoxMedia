@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, ChevronDown } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useVideoConfig } from '../VideoConfig';
 import type { VideoUrls } from '../VideoConfig';
 
@@ -24,7 +24,7 @@ const servicesData: Record<string, Array<{
       title: "Photography", 
       desc: "Professional photography services for products, portraits, and lifestyle. Capture the essence of your brand with stunning, high-resolution imagery.",
       img: "/photography-bg.png",
-      slideshow: ["/photography-bg.png", "/photography-2.png", "/photography-3.png", "/photography-4.png"]
+      slideshow: ["/photography-bg.png", "/photography-2.png", "/photography-3.png", "/photography-4.png", "/photography-5.png", "/photography-6.png", "/photography-7.png", "/photography-8.png", "/photography-9.png", "/photography-10.png", "/photography-11.png"]
     },
     { 
       title: "Drone Services", 
@@ -35,7 +35,8 @@ const servicesData: Record<string, Array<{
     { 
       title: "Brand Video Production", 
       desc: "Compelling brand stories and engaging content optimized for your website. We create anthems that define who you are and what you stand for.",
-      img: "/brand-video-bg.png"
+      img: "/brand-video-bg.png",
+      videoKey: "brandVideo"
     },
     { 
       title: "Documentary Storytelling", 
@@ -50,31 +51,31 @@ const servicesData: Record<string, Array<{
       videoKey: "commercials"
     },
     { 
-      title: "Real Estate Media", 
+      title: "Cinematography", 
       desc: "Professional photos, video tours, and drone footage to showcase properties. Help buyers visualize their future home with immersive media.",
       img: "/real-estate-1.png",
-      slideshow: ["/real-estate-1.png", "/real-estate-2.png"]
+      videoKey: "cinematography"
     }
   ],
   "Event & Campaign Coverage": [
     { 
       title: "Hype Videos & Recaps", 
       desc: "Energetic, fast-paced recaps that capture the excitement of your events. Perfect for social media sharing and promoting future ticket sales.",
-      img: "/recap-bg.png"
+      img: "/recap-bg.png",
+      videoKey: "hypeRecap"
     },
     { 
       title: "Corporate Events", 
       desc: "Professional documentation of conferences, meetings, and corporate gatherings. We blend in seamlessly to capture authentic networking and presentations.",
       img: "/strategic-video-marketing-bg.png",
-      slideshow: ["/strategic-video-marketing-bg.png", "/strategic-video-marketing-2.png"]
+      videoKey: "corporateEvents"
     }
   ],
   "Marketing & Ongoing Content": [
     { 
       title: "Strategic Video Marketing", 
       desc: "Data-driven video campaigns designed to achieve specific marketing objectives. We don't just make videos; we build funnels that convert.",
-      img: "/strategic-video-marketing-bg.png",
-      videoKey: "strategicVideoMarketing"
+      img: "/strategic-video-marketing-bg.png"
     },
     { 
       title: "Social Media Management", 
@@ -85,6 +86,8 @@ const servicesData: Record<string, Array<{
 };
 
 type CategoryKey = keyof typeof servicesData;
+
+const categoryKeys: CategoryKey[] = ["Content Production", "Event & Campaign Coverage", "Marketing & Ongoing Content"];
 
 const SLIDESHOW_INTERVAL_MS = 3000;
 
@@ -120,18 +123,18 @@ export default function Services() {
   }, [hasSlideshow]);
 
   return (
-    <section id="services" className="py-24 bg-brand-gray relative">
+    <section id="services" className="py-16 md:py-24 bg-brand-gray relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-sm font-bold text-brand-red tracking-widest uppercase mb-4">Our Professional Services</h2>
-          <h3 className="text-4xl md:text-5xl font-bold mb-6">A creative partner for all things visual</h3>
-          <p className="text-xl text-gray-400 max-w-3xl mx-auto">
+        <div className="text-center mb-10 md:mb-16">
+          <h2 className="text-xs sm:text-sm font-bold text-brand-red tracking-widest uppercase mb-3 md:mb-4">Our Professional Services</h2>
+          <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-4 md:mb-6 leading-tight">A creative partner for all things visual</h3>
+          <p className="text-base sm:text-lg md:text-xl text-gray-400 max-w-3xl mx-auto px-0 sm:px-2">
             Offering photo, video, and content production built for clarity and connection.
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex flex-wrap justify-center gap-4 mb-16 border-b border-white/10 pb-4">
+        {/* Tabs (desktop only; mobile shows all sections in order) */}
+        <div className="hidden md:flex flex-wrap justify-center gap-4 mb-16 border-b border-white/10 pb-4">
           {(Object.keys(servicesData) as CategoryKey[]).map((tab) => (
             <button
               key={tab}
@@ -233,29 +236,19 @@ export default function Services() {
           </div>
         </div>
 
-        {/* Mobile Accordion Layout */}
-        <div className="md:hidden space-y-4">
-          {currentServices.map((service, idx) => (
-            <div key={idx} className="bg-brand-black rounded-xl border border-white/5 overflow-hidden">
-              <button 
-                onClick={() => setActiveIndex(activeIndex === idx ? -1 : idx)}
-                className="w-full text-left p-6 flex justify-between items-center"
-              >
-                <span className={`font-bold text-lg ${activeIndex === idx ? 'text-brand-red' : 'text-white'}`}>
-                  {service.title}
-                </span>
-                <ChevronDown className={`transition-transform duration-300 ${activeIndex === idx ? 'rotate-180 text-brand-red' : 'text-gray-500'}`} />
-              </button>
-              
-              <AnimatePresence>
-                {activeIndex === idx && (
-                  <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{ height: 'auto', opacity: 1 }}
-                    exit={{ height: 0, opacity: 0 }}
-                    className="overflow-hidden"
-                  >
-                    <div className="p-6 pt-0">
+        {/* Mobile: Three sections, all backgrounds visible with titles */}
+        <div className="md:hidden space-y-12 sm:space-y-16">
+          {categoryKeys.map((category) => {
+            const services = servicesData[category];
+            return (
+            <div key={category} className="space-y-5">
+              <div className="border-b-2 border-brand-red pb-2.5">
+                <h4 className="text-base sm:text-lg font-bold uppercase tracking-wider text-white">{category}</h4>
+              </div>
+              <div className="space-y-6 sm:space-y-8">
+                {services.map((service, idx) => (
+                  <div key={idx} className="rounded-2xl overflow-hidden border border-white/10 bg-brand-black shadow-lg">
+                    <div className="relative aspect-[4/3] w-full">
                       {service.videoKey ? (
                         <video
                           src={getVideoSrc(service)}
@@ -263,40 +256,45 @@ export default function Services() {
                           muted
                           loop
                           playsInline
-                          className="w-full h-48 object-cover rounded-lg mb-6 border border-white/10"
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       ) : 'slideshow' in service && service.slideshow?.length ? (
-                        <div className="relative w-full h-48 rounded-lg mb-6 border border-white/10 overflow-hidden">
-                          <AnimatePresence mode="wait" initial={false}>
-                            <motion.img
-                              key={slideIndex}
-                              src={service.slideshow[slideIndex]}
-                              alt={service.title}
-                              initial={{ opacity: 0 }}
-                              animate={{ opacity: 1 }}
-                              exit={{ opacity: 0 }}
-                              transition={{ duration: 0.5 }}
-                              className={`absolute inset-0 w-full h-full object-cover ${service.title === 'Photography' ? 'object-[40%_50%]' : ''}`}
-                            />
-                          </AnimatePresence>
-                        </div>
+                        <AnimatePresence mode="wait" initial={false}>
+                          <motion.img
+                            key={slideIndex}
+                            src={service.slideshow[slideIndex]}
+                            alt={service.title}
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5 }}
+                            className={`absolute inset-0 w-full h-full object-cover ${service.title === 'Photography' ? 'object-[40%_50%]' : ''}`}
+                          />
+                        </AnimatePresence>
                       ) : (
-                        <img 
-                          src={service.img} 
-                          alt={service.title} 
-                          className="w-full h-48 object-cover rounded-lg mb-6 border border-white/10"
+                        <img
+                          src={service.img}
+                          alt={service.title}
+                          className="absolute inset-0 w-full h-full object-cover"
                         />
                       )}
-                      <p className="text-gray-400 mb-6 leading-relaxed">{service.desc}</p>
-                      <a href="#contact" className="inline-flex items-center gap-2 text-brand-red font-semibold hover:text-red-400 transition-colors">
-                        Book a Consultation <ArrowRight size={16} />
+                      <div className="absolute inset-0 bg-gradient-to-t from-brand-black/90 via-transparent to-transparent" />
+                      <div className="absolute bottom-0 left-0 right-0 p-4 sm:p-5">
+                        <h5 className="text-base sm:text-lg font-bold text-white drop-shadow-sm">{service.title}</h5>
+                      </div>
+                    </div>
+                    <div className="p-4 sm:p-5">
+                      <p className="text-gray-400 text-sm leading-relaxed">{service.desc}</p>
+                      <a href="#contact" className="mt-4 inline-flex items-center gap-2 text-brand-red font-semibold text-sm hover:text-red-400 transition-colors">
+                        Book a Consultation <ArrowRight size={14} />
                       </a>
                     </div>
-                  </motion.div>
-                )}
-              </AnimatePresence>
+                  </div>
+                ))}
+              </div>
             </div>
-          ))}
+          );
+          })}
         </div>
 
       </div>

@@ -21,14 +21,14 @@ export default function WhyChooseUs() {
   ];
 
   return (
-    <section className="py-24 bg-brand-black relative">
+    <section className="py-16 md:py-24 bg-brand-black relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 md:gap-16">
           <div className="lg:col-span-5">
-            <div className="sticky top-32">
-              <h2 className="text-sm font-bold text-brand-red tracking-widest uppercase mb-4">Why Choose Us</h2>
-              <h3 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-6 leading-tight">Crafted with Clarity,<br/>Delivered with Heart</h3>
-              <p className="text-xl text-gray-400">
+            <div className="lg:sticky lg:top-32">
+              <h2 className="text-xs sm:text-sm font-bold text-brand-red tracking-widest uppercase mb-3 md:mb-4">Why Choose Us</h2>
+              <h3 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 md:mb-6 leading-tight">Crafted with Clarity,<br/>Delivered with Heart</h3>
+              <p className="text-base sm:text-lg md:text-xl text-gray-400">
                 We combine creativity, strategy, and technical expertise to bring your brand's vision to life.
               </p>
             </div>
@@ -43,15 +43,15 @@ export default function WhyChooseUs() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true, margin: "-100px" }}
                   transition={{ duration: 0.6 }}
-                  className="py-10 border-b border-white/10 first:pt-0 last:border-0 group"
+                  className="py-8 sm:py-10 border-b border-white/10 first:pt-0 last:border-0 group"
                 >
-                  <div className="flex flex-col md:flex-row gap-6 md:gap-12 items-start">
-                    <span className="text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent group-hover:from-brand-red/50 transition-all duration-500">
+                  <div className="flex flex-col md:flex-row gap-4 md:gap-12 items-start">
+                    <span className="text-4xl sm:text-5xl md:text-6xl font-black text-transparent bg-clip-text bg-gradient-to-b from-white/20 to-transparent group-hover:from-brand-red/50 transition-all duration-500">
                       0{index + 1}
                     </span>
                     <div>
-                      <h4 className="text-2xl md:text-3xl font-bold mb-4 text-white group-hover:text-brand-red transition-colors duration-300">{feature.title}</h4>
-                      <p className="text-gray-400 text-lg leading-relaxed">{feature.description}</p>
+                      <h4 className="text-xl sm:text-2xl md:text-3xl font-bold mb-2 sm:mb-4 text-white group-hover:text-brand-red transition-colors duration-300">{feature.title}</h4>
+                      <p className="text-gray-400 text-base sm:text-lg leading-relaxed">{feature.description}</p>
                     </div>
                   </div>
                 </motion.div>

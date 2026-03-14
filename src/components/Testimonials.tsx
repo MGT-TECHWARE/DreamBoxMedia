@@ -30,7 +30,7 @@ export default function Testimonials() {
   const prev = () => setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
 
   return (
-    <section className="py-32 bg-brand-black relative overflow-hidden">
+    <section className="py-20 md:py-32 bg-brand-black relative overflow-hidden">
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-brand-red/5 rounded-full blur-[120px] pointer-events-none"></div>
 
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -38,7 +38,7 @@ export default function Testimonials() {
           <Quote size={64} className="text-brand-red/20" />
         </div>
 
-        <div className="relative min-h-[300px] flex items-center justify-center">
+        <div className="relative min-h-[260px] sm:min-h-[300px] flex items-center justify-center">
           <AnimatePresence mode="wait">
             <motion.div
               key={currentIndex}
@@ -48,7 +48,7 @@ export default function Testimonials() {
               transition={{ duration: 0.5 }}
               className="text-center absolute inset-0 flex flex-col items-center justify-center"
             >
-              <p className="text-2xl md:text-4xl lg:text-5xl font-medium text-white leading-tight mb-10">
+              <p className="text-lg sm:text-xl md:text-4xl lg:text-5xl font-medium text-white leading-tight mb-8 md:mb-10 px-1">
                 "{testimonials[currentIndex].quote}"
               </p>
               
@@ -62,7 +62,7 @@ export default function Testimonials() {
           </AnimatePresence>
         </div>
 
-        <div className="flex items-center justify-center gap-6 mt-16">
+        <div className="flex items-center justify-center gap-4 sm:gap-6 mt-10 sm:mt-16">
           <button onClick={prev} className="w-12 h-12 rounded-full border border-white/20 flex items-center justify-center text-white hover:bg-white hover:text-brand-black transition-all">
             <ArrowLeft size={20} />
           </button>

@@ -17,9 +17,7 @@ export default function Navbar() {
     { name: 'Home', href: '#home' },
     { name: 'About Us', href: '#about' },
     { name: 'Services', href: '#services' },
-    { name: 'Our Work', href: '#work' },
     { name: 'FAQ', href: '#faq' },
-    { name: 'Contact', href: '#contact' },
   ];
 
   return (
@@ -54,13 +52,13 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       {isMobileMenuOpen && (
-        <div className="md:hidden bg-brand-black border-t border-white/10 absolute w-full">
-          <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+        <div className="md:hidden bg-brand-black border-t border-white/10 absolute w-full left-0 right-0">
+          <div className="px-4 pt-4 pb-5 space-y-0">
             {navLinks.map((link) => (
               <a
                 key={link.name}
                 href={link.href}
-                className="block px-3 py-2 text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-md"
+                className="block px-4 py-3.5 text-base font-medium text-gray-300 hover:text-white hover:bg-white/5 rounded-lg transition-colors"
                 onClick={() => setIsMobileMenuOpen(false)}
               >
                 {link.name}
@@ -68,7 +66,7 @@ export default function Navbar() {
             ))}
             <a
               href="#contact"
-              className="block w-full text-center mt-4 bg-brand-red text-white px-6 py-3 rounded-md font-semibold"
+              className="block mx-4 mt-4 text-center bg-brand-red text-white px-6 py-3.5 rounded-full font-semibold text-sm"
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Book a Free Consultation

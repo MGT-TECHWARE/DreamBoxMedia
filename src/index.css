@@ -14,3 +14,12 @@ body {
   font-family: var(--font-sans);
   scroll-behavior: smooth;
 }
+
+/* Hide scrollbar for portfolio dot strip on mobile while keeping scroll */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -16,10 +16,13 @@ const publicDir = path.join(root, 'public');
 const BUCKET = 'dreambox-media-assets';
 const VIDEOS = [
   { file: 'drone-loop.mp4', env: 'VITE_DRONE_LOOP_VIDEO_URL' },
-  { file: 'commercials-bg.mp4', env: 'VITE_COMMERCIALS_VIDEO_URL' },
+  { file: 'commercials-bg.mov', env: 'VITE_COMMERCIALS_VIDEO_URL' },
   { file: 'videography-bg.mov', env: 'VITE_VIDEOGRAPHY_VIDEO_URL' },
-  { file: 'strategic-video-marketing-bg.mov', env: 'VITE_STRATEGIC_VIDEO_MARKETING_VIDEO_URL' },
   { file: 'documentary-bg.mov', env: 'VITE_DOCUMENTARY_VIDEO_URL' },
+  { file: 'brand-video-bg.mp4', env: 'VITE_BRAND_VIDEO_VIDEO_URL' },
+  { file: 'hype-recap-bg.mp4', env: 'VITE_HYPE_RECAP_VIDEO_URL' },
+  { file: 'corporate-events-bg.mov', env: 'VITE_CORPORATE_EVENTS_VIDEO_URL' },
+  { file: 'cinematography-bg.mov', env: 'VITE_CINEMATOGRAPHY_VIDEO_URL' },
 ];
 
 function run(cmd, opts = {}) {

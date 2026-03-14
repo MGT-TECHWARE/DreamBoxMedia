@@ -9,7 +9,7 @@
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "deploy": "npm run build && node -e \"const fs=require('fs');['drone-loop.mp4','commercials-bg.mp4','videography-bg.mov','strategic-video-marketing-bg.mov','documentary-bg.mov'].forEach(f=>{try{fs.unlinkSync('dist/'+f)}catch(e){}})\" && npx wrangler pages deploy dist --project-name=dreambox-media",
+    "deploy": "npm run build && node -e \"const fs=require('fs');['drone-loop.mp4','commercials-bg.mp4','commercials-bg.mov','videography-bg.mov','documentary-bg.mov','brand-video-bg.mp4','hype-recap-bg.mp4','corporate-events-bg.mov','cinematography-bg.mov','strategic-video-marketing-bg.mov'].forEach(f=>{try{fs.unlinkSync('dist/'+f)}catch(e){}})\" && npx wrangler pages deploy dist --project-name=dreambox-media",
     "setup-r2-and-deploy": "node scripts/setup-r2-and-deploy.mjs",
     "r2-cors": "npx wrangler r2 bucket cors set dreambox-media-assets --file scripts/r2-cors.json",
     "upload-r2": "node scripts/upload-r2-s3.mjs"
