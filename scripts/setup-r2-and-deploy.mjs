@@ -16,7 +16,7 @@ const publicDir = path.join(root, 'public');
 const BUCKET = 'dreambox-media-assets';
 const VIDEOS = [
   { file: 'drone-loop.mp4', env: 'VITE_DRONE_LOOP_VIDEO_URL' },
-  { file: 'commercials-bg.mov', env: 'VITE_COMMERCIALS_VIDEO_URL' },
+  { file: 'commercials-high-end-bg.mov', env: 'VITE_COMMERCIALS_VIDEO_URL' },
   { file: 'videography-bg.mov', env: 'VITE_VIDEOGRAPHY_VIDEO_URL' },
   { file: 'documentary-bg.mov', env: 'VITE_DOCUMENTARY_VIDEO_URL' },
   { file: 'brand-video-bg.mp4', env: 'VITE_BRAND_VIDEO_VIDEO_URL' },
