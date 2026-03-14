@@ -2,7 +2,7 @@
 /**
  * Upload a single file to Cloudflare R2 (S3 API).
  * Usage: node scripts/upload-r2-one.mjs <filename>
- * Example: node scripts/upload-r2-one.mjs commercials-high-end-bg.mov
+ * Example: node scripts/upload-r2-one.mjs commercials-bg.mov
  *
  * Required env: R2_ACCESS_KEY_ID, R2_SECRET_ACCESS_KEY
  * Optional: R2_ENDPOINT, R2_BUCKET
@@ -24,7 +24,7 @@ const CONTENT_TYPES = {
   '.mp4': 'video/mp4',
 };
 
-const file = process.argv[2] || 'commercials-high-end-bg.mov';
+const file = process.argv[2] || 'commercials-bg.mov';
 const filePath = path.join(publicDir, file);
 
 if (!process.env.R2_ACCESS_KEY_ID || !process.env.R2_SECRET_ACCESS_KEY) {

@@ -24,7 +24,7 @@ const ENDPOINT = process.env.R2_ENDPOINT || 'https://ad78d21bbc65eac9f459d397ff3
 
 const VIDEOS = [
   { file: 'drone-loop.mp4', contentType: 'video/mp4' },
-  { file: 'commercials-high-end-bg.mov', contentType: 'video/quicktime' },
+  { file: 'commercials-bg.mov', contentType: 'video/quicktime' },
   { file: 'videography-bg.mov', contentType: 'video/quicktime' },
   { file: 'documentary-bg.mov', contentType: 'video/quicktime' },
   { file: 'brand-video-bg.mp4', contentType: 'video/mp4' },

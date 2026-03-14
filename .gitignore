@@ -21,6 +21,7 @@ dist/
 
 # Large media (GitHub 100MB file limit) - add manually after clone or host on CDN
 public/commercials-bg.mp4
+public/commercials-bg.mov
 public/commercials-high-end-bg.mov
 public/videography-bg.mov
 public/drone-bg.mp4

@@ -13,7 +13,7 @@
     "setup-r2-and-deploy": "node scripts/setup-r2-and-deploy.mjs",
     "r2-cors": "npx wrangler r2 bucket cors set dreambox-media-assets --file scripts/r2-cors.json",
     "upload-r2": "node scripts/upload-r2-s3.mjs",
-    "upload-r2-commercials": "node scripts/upload-r2-one.mjs commercials-high-end-bg.mov"
+    "upload-r2-commercials": "node scripts/upload-r2-one.mjs commercials-bg.mov"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
