@@ -14,7 +14,7 @@ export type VideoUrls = {
 
 const defaults: VideoUrls = {
   droneLoop: import.meta.env.VITE_DRONE_LOOP_VIDEO_URL || '/drone-loop.mp4',
-  commercials: import.meta.env.VITE_COMMERCIALS_VIDEO_URL || '/commercials-bg.mov',
+  commercials: import.meta.env.VITE_COMMERCIALS_VIDEO_URL || '/commercials-high-end-bg.mov',
   videography: import.meta.env.VITE_VIDEOGRAPHY_VIDEO_URL || '/videography-bg.mov',
   strategicVideoMarketing: import.meta.env.VITE_STRATEGIC_VIDEO_MARKETING_VIDEO_URL || '/strategic-video-marketing-bg.mov',
   documentary: import.meta.env.VITE_DOCUMENTARY_VIDEO_URL || '/documentary-bg.mov',

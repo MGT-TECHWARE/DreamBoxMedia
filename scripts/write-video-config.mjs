@@ -32,7 +32,7 @@ const R2_PUBLIC_BASE = process.env.R2_PUBLIC_BASE_URL || 'https://pub-af862b0084
 const r2 = (file) => `${R2_PUBLIC_BASE.replace(/\/$/, '')}/${file}`;
 const videoUrls = {
   droneLoop: sanitize(process.env.VITE_DRONE_LOOP_VIDEO_URL) || r2('drone-loop.mp4'),
-  commercials: sanitize(process.env.VITE_COMMERCIALS_VIDEO_URL) || r2('commercials-bg.mov'),
+  commercials: sanitize(process.env.VITE_COMMERCIALS_VIDEO_URL) || r2('commercials-high-end-bg.mov'),
   videography: sanitize(process.env.VITE_VIDEOGRAPHY_VIDEO_URL) || r2('videography-bg.mov'),
   strategicVideoMarketing: sanitize(process.env.VITE_STRATEGIC_VIDEO_MARKETING_VIDEO_URL) || r2('strategic-video-marketing-bg.mov'),
   documentary: sanitize(process.env.VITE_DOCUMENTARY_VIDEO_URL) || r2('documentary-bg.mov'),
