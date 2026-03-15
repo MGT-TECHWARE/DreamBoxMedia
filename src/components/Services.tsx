@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { ArrowRight, Play } from 'lucide-react';
 import { useVideoConfig } from '../VideoConfig';
@@ -91,24 +91,35 @@ const categoryKeys: CategoryKey[] = ["Content Production", "Event & Campaign Cov
 
 const SLIDESHOW_INTERVAL_MS = 3000;
 
-const R2_BASE = 'https://pub-af862b00846949159a7faf9dcf6ff420.r2.dev';
 
 export default function Services() {
   const videoConfig = useVideoConfig();
   const [activeTab, setActiveTab] = useState<CategoryKey>("Content Production");
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
-  const [commercialsFallback, setCommercialsFallback] = useState(false);
   const [mobilePlayingKey, setMobilePlayingKey] = useState<string | null>(null);
+  const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
 
   const getVideoSrc = (service: (typeof servicesData)[CategoryKey][number]) => {
     if (!service.videoKey) return '';
-    if (service.videoKey === 'commercials' && commercialsFallback)
-      return `${R2_BASE}/commercials-bg.mov`;
     return videoConfig[service.videoKey];
   };
 
-  const onCommercialsError = () => setCommercialsFallback(true);
+  const handleMobilePlay = useCallback((playKey: string) => {
+    if (mobilePlayingKey && mobilePlayingKey !== playKey) {
+      const prev = videoRefs.current[mobilePlayingKey];
+      if (prev) { prev.pause(); prev.currentTime = 0; }
+    }
+    if (mobilePlayingKey === playKey) {
+      const video = videoRefs.current[playKey];
+      if (video) { video.pause(); video.currentTime = 0; }
+      setMobilePlayingKey(null);
+    } else {
+      const video = videoRefs.current[playKey];
+      if (video) { video.play().catch(() => {}); }
+      setMobilePlayingKey(playKey);
+    }
+  }, [mobilePlayingKey]);
 
   const handleTabChange = (tab: CategoryKey) => {
     setActiveTab(tab);
@@ -131,10 +142,6 @@ export default function Services() {
   useEffect(() => {
     if (!hasSlideshow) setSlideIndex(0);
   }, [hasSlideshow]);
-
-  useEffect(() => {
-    if (activeService.videoKey === 'commercials') setCommercialsFallback(false);
-  }, [activeTab, activeIndex]);
 
   return (
     <section id="services" className="py-16 md:py-24 bg-brand-gray relative">
@@ -206,12 +213,12 @@ export default function Services() {
                 {activeService.videoKey ? (
                   <video
                     src={getVideoSrc(activeService)}
-                    poster={activeService.videoKey === 'commercials' ? activeService.img : undefined}
+
                     autoPlay
                     muted
                     loop
                     playsInline
-                    onError={activeService.videoKey === 'commercials' ? onCommercialsError : undefined}
+
                     className="w-full h-full object-cover"
                   />
                 ) : hasSlideshow ? (
@@ -269,37 +276,36 @@ export default function Services() {
                         (() => {
                           const playKey = `${category}-${idx}`;
                           const isPlaying = mobilePlayingKey === playKey;
-                          return isPlaying ? (
-                            <button
-                              type="button"
-                              onClick={() => setMobilePlayingKey(null)}
-                              className="absolute inset-0 w-full h-full block"
-                              aria-label="Stop video"
-                            >
+                          return (
+                            <>
                               <video
+                                ref={(el) => { videoRefs.current[playKey] = el; }}
                                 src={getVideoSrc(service)}
-                                poster={service.img}
-                                autoPlay
                                 muted
                                 loop
                                 playsInline
-                                onClick={(e) => e.stopPropagation()}
-                                onError={service.videoKey === 'commercials' ? onCommercialsError : undefined}
-                                className="absolute inset-0 w-full h-full object-cover pointer-events-none"
+                                preload="none"
+                                className="absolute inset-0 w-full h-full object-cover"
                               />
-                            </button>
-                          ) : (
-                            <button
-                              type="button"
-                              onClick={() => setMobilePlayingKey(playKey)}
-                              className="absolute inset-0 w-full h-full flex items-center justify-center bg-brand-black/40 hover:bg-brand-black/50 transition-colors"
-                              aria-label={`Play ${service.title} video`}
-                            >
-                              <img src={service.img} alt="" className="absolute inset-0 w-full h-full object-cover -z-10" />
-                              <span className="w-14 h-14 rounded-full bg-brand-red/90 flex items-center justify-center shadow-lg">
-                                <Play size={28} className="text-white ml-1" fill="white" />
-                              </span>
-                            </button>
+                              {!isPlaying && (
+                                <div className="absolute inset-0 z-10">
+                                  <img src={service.img} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                                  <div className="absolute inset-0 bg-brand-black/40" />
+                                </div>
+                              )}
+                              <button
+                                type="button"
+                                onClick={() => handleMobilePlay(playKey)}
+                                className="absolute inset-0 w-full h-full flex items-center justify-center z-20"
+                                aria-label={isPlaying ? 'Stop video' : `Play ${service.title} video`}
+                              >
+                                {!isPlaying && (
+                                  <span className="w-14 h-14 rounded-full bg-brand-red/90 flex items-center justify-center shadow-lg">
+                                    <Play size={28} className="text-white ml-1" fill="white" />
+                                  </span>
+                                )}
+                              </button>
+                            </>
                           );
                         })()
                       ) : 'slideshow' in service && service.slideshow?.length ? (

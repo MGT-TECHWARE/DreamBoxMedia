@@ -5,15 +5,11 @@
   "type": "module",
   "scripts": {
     "dev": "vite --port=3000 --host=0.0.0.0",
-    "build": "node scripts/write-video-config.mjs && vite build",
+    "build": "vite build",
     "preview": "vite preview",
     "clean": "rm -rf dist",
     "lint": "tsc --noEmit",
-    "deploy": "npm run build && node -e \"const fs=require('fs');['drone-loop.mp4','commercials-bg.mp4','commercials-bg.mov','commercials-high-end-bg.mov','videography-bg.mov','documentary-bg.mov','brand-video-bg.mp4','hype-recap-bg.mp4','corporate-events-bg.mov','cinematography-bg.mov','strategic-video-marketing-bg.mov'].forEach(f=>{try{fs.unlinkSync('dist/'+f)}catch(e){}})\" && npx wrangler pages deploy dist --project-name=dreambox-media --branch=DreamBoxMedia",
-    "setup-r2-and-deploy": "node scripts/setup-r2-and-deploy.mjs",
-    "r2-cors": "npx wrangler r2 bucket cors set dreambox-media-assets --file scripts/r2-cors.json",
-    "upload-r2": "node scripts/upload-r2-s3.mjs",
-    "upload-r2-commercials": "node scripts/upload-r2-one.mjs commercials-high-end-bg.mov"
+    "deploy": "npm run build && npx wrangler pages deploy dist --project-name=dreambox-media --branch=DreamBoxMedia"
   },
   "dependencies": {
     "@google/genai": "^1.29.0",
@@ -29,8 +25,7 @@
     "vite": "^6.2.0"
   },
   "devDependencies": {
-    "@aws-sdk/client-s3": "^3.1008.0",
-    "@types/express": "^4.17.21",
+"@types/express": "^4.17.21",
     "@types/node": "^22.14.0",
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.1.14",
