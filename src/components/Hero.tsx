@@ -3,13 +3,14 @@ import { ArrowRight } from 'lucide-react';
 import { useVideoConfig } from '../VideoConfig';
 
 export default function Hero() {
-  const { droneLoop } = useVideoConfig();
+  const { urls: { droneLoop }, posters } = useVideoConfig();
   return (
     <section id="home" className="relative min-h-screen flex items-center pt-24 pb-12 sm:pt-20 sm:pb-0 overflow-hidden">
       {/* Background Video */}
       <div className="absolute inset-0 z-0 min-h-[100vh] min-w-full">
         <video
           src={droneLoop}
+          poster={posters.droneLoop}
           autoPlay
           muted
           loop

@@ -1,10 +1,8 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowRight, Play } from 'lucide-react';
+import { ArrowRight } from 'lucide-react';
 import { useVideoConfig } from '../VideoConfig';
-import type { VideoUrls } from '../VideoConfig';
-
-type VideoKey = keyof VideoUrls;
+import type { VideoKey } from '../VideoConfig';
 
 const servicesData: Record<string, Array<{
   title: string;
@@ -14,71 +12,71 @@ const servicesData: Record<string, Array<{
   slideshow?: string[];
 }>> = {
   "Content Production": [
-    { 
-      title: "Videography", 
+    {
+      title: "Videography",
       desc: "High-quality video production tailored to your brand's unique voice and goals. We handle everything from pre-production planning to the final polished edit.",
       img: "https://images.unsplash.com/photo-1601506521937-0121a7fc2a6b?q=80&w=2071&auto=format&fit=crop",
       videoKey: "videography"
     },
-    { 
-      title: "Photography", 
+    {
+      title: "Photography",
       desc: "Professional photography services for products, portraits, and lifestyle. Capture the essence of your brand with stunning, high-resolution imagery.",
       img: "/photography-bg.png",
       slideshow: ["/photography-bg.png", "/photography-2.png", "/photography-3.png", "/photography-4.png", "/photography-5.png", "/photography-6.png", "/photography-7.png", "/photography-8.png", "/photography-9.png", "/photography-10.png", "/photography-11.png"]
     },
-    { 
-      title: "Drone Services", 
+    {
+      title: "Drone Services",
       desc: "Stunning aerial footage and photography to elevate your visual storytelling. Perfect for real estate, events, and cinematic brand videos.",
       img: "https://images.unsplash.com/photo-1508614589041-895b88991e3e?q=80&w=2000&auto=format&fit=crop",
       videoKey: "droneLoop"
     },
-    { 
-      title: "Brand Video Production", 
+    {
+      title: "Brand Video Production",
       desc: "Compelling brand stories and engaging content optimized for your website. We create anthems that define who you are and what you stand for.",
       img: "/brand-video-bg.png",
       videoKey: "brandVideo"
     },
-    { 
-      title: "Documentary Storytelling", 
+    {
+      title: "Documentary Storytelling",
       desc: "Authentic, narrative-driven videos that connect deeply with your audience. We dig into the real stories behind your people and mission.",
       img: "https://images.unsplash.com/photo-1485846234645-a62644f84728?q=80&w=2000&auto=format&fit=crop",
       videoKey: "documentary"
     },
-    { 
-      title: "Commercials & High-End", 
+    {
+      title: "Commercials & High-End",
       desc: "Premium commercial production for broadcast, web, and social media campaigns. High production value designed to maximize ROI.",
       img: "/commercials-bg.png",
       videoKey: "commercials"
     },
-    { 
-      title: "Cinematography", 
+    {
+      title: "Cinematography",
       desc: "Professional photos, video tours, and drone footage to showcase properties. Help buyers visualize their future home with immersive media.",
       img: "/real-estate-1.png",
       videoKey: "cinematography"
     }
   ],
   "Event & Campaign Coverage": [
-    { 
-      title: "Hype Videos & Recaps", 
+    {
+      title: "Hype Videos & Recaps",
       desc: "Energetic, fast-paced recaps that capture the excitement of your events. Perfect for social media sharing and promoting future ticket sales.",
       img: "/recap-bg.png",
       videoKey: "hypeRecap"
     },
-    { 
-      title: "Corporate Events", 
+    {
+      title: "Corporate Events",
       desc: "Professional documentation of conferences, meetings, and corporate gatherings. We blend in seamlessly to capture authentic networking and presentations.",
       img: "/strategic-video-marketing-bg.png",
       videoKey: "corporateEvents"
     }
   ],
   "Marketing & Ongoing Content": [
-    { 
-      title: "Strategic Video Marketing", 
+    {
+      title: "Strategic Video Marketing",
       desc: "Data-driven video campaigns designed to achieve specific marketing objectives. We don't just make videos; we build funnels that convert.",
       img: "/strategic-video-marketing-bg.png"
     },
-    { 
-      title: "Social Media Management", 
+    {
+      title: "Social Media Management",
       desc: "Consistent, engaging content creation and management for your social channels. Stay top-of-mind with high-quality, trend-aware vertical video.",
       img: "/social-media-bg.png"
     }
@@ -93,33 +91,83 @@ const SLIDESHOW_INTERVAL_MS = 3000;
 
 
 export default function Services() {
-  const videoConfig = useVideoConfig();
+  const { urls: videoUrls, posters: videoPosterUrls } = useVideoConfig();
   const [activeTab, setActiveTab] = useState<CategoryKey>("Content Production");
   const [activeIndex, setActiveIndex] = useState(0);
   const [slideIndex, setSlideIndex] = useState(0);
   const [mobilePlayingKey, setMobilePlayingKey] = useState<string | null>(null);
+  const [mobileVisibleKey, setMobileVisibleKey] = useState<string | null>(null);
   const videoRefs = useRef<Record<string, HTMLVideoElement | null>>({});
+  const mobileCardEls = useRef<Record<string, HTMLDivElement | null>>({});
 
   const getVideoSrc = (service: (typeof servicesData)[CategoryKey][number]) => {
     if (!service.videoKey) return '';
-    return videoConfig[service.videoKey];
+    return videoUrls[service.videoKey];
   };
 
-  const handleMobilePlay = useCallback((playKey: string) => {
-    if (mobilePlayingKey && mobilePlayingKey !== playKey) {
-      const prev = videoRefs.current[mobilePlayingKey];
-      if (prev) { prev.pause(); prev.currentTime = 0; }
-    }
-    if (mobilePlayingKey === playKey) {
-      const video = videoRefs.current[playKey];
-      if (video) { video.pause(); video.currentTime = 0; }
-      setMobilePlayingKey(null);
-    } else {
-      const video = videoRefs.current[playKey];
-      if (video) { video.play().catch(() => {}); }
-      setMobilePlayingKey(playKey);
-    }
-  }, [mobilePlayingKey]);
+  const getVideoPoster = (service: (typeof servicesData)[CategoryKey][number]) => {
+    if (!service.videoKey) return service.img;
+    return videoPosterUrls[service.videoKey] || service.img;
+  };
+
+  // On scroll, find the video card closest to viewport center and play only that one
+  useEffect(() => {
+    let ticking = false;
+
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        ticking = false;
+        const viewportCenter = window.innerHeight / 2;
+        let bestKey: string | null = null;
+        let bestDist = Infinity;
+
+        (Object.entries(mobileCardEls.current) as [string, HTMLDivElement | null][]).forEach(([key, el]) => {
+          if (!el) return;
+          const rect = el.getBoundingClientRect();
+          // Card must be at least partially visible
+          if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+          const cardCenter = rect.top + rect.height / 2;
+          const dist = Math.abs(cardCenter - viewportCenter);
+          if (dist < bestDist) {
+            bestDist = dist;
+            bestKey = key;
+          }
+        });
+
+        // Only play if the closest card's center is within a reasonable range
+        if (bestKey && bestDist > window.innerHeight * 0.4) {
+          bestKey = null;
+        }
+
+        setMobilePlayingKey((prev) => {
+          if (prev === bestKey) return prev;
+          // Pause previous
+          if (prev) {
+            const prevVideo = videoRefs.current[prev];
+            if (prevVideo) prevVideo.pause();
+          }
+          // Play new
+          if (bestKey) {
+            const nextVideo = videoRefs.current[bestKey];
+            if (nextVideo) nextVideo.play().catch(() => {});
+          }
+          return bestKey;
+        });
+      });
+    };
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    // Run once on mount to catch already-visible cards
+    onScroll();
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
+
+  // Callback ref to register each mobile video card element
+  const mobileCardRef = useCallback((playKey: string) => (el: HTMLDivElement | null) => {
+    mobileCardEls.current[playKey] = el;
+  }, []);
 
   const handleTabChange = (tab: CategoryKey) => {
     setActiveTab(tab);
@@ -213,7 +261,7 @@ export default function Services() {
                 {activeService.videoKey ? (
                   <video
                     src={getVideoSrc(activeService)}
-
+                    poster={getVideoPoster(activeService)}
                     autoPlay
                     muted
                     loop
@@ -275,37 +323,33 @@ export default function Services() {
                       {service.videoKey ? (
                         (() => {
                           const playKey = `${category}-${idx}`;
-                          const isPlaying = mobilePlayingKey === playKey;
                           return (
-                            <>
+                            <div
+                              ref={mobileCardRef(playKey)}
+                              data-play-key={playKey}
+                              className="absolute inset-0"
+                            >
                               <video
                                 ref={(el) => { videoRefs.current[playKey] = el; }}
                                 src={getVideoSrc(service)}
+                                poster={getVideoPoster(service)}
                                 muted
                                 loop
                                 playsInline
-                                preload="none"
+                                preload="metadata"
+                                onPlaying={() => setMobileVisibleKey(playKey)}
+                                onPause={() => setMobileVisibleKey((prev) => prev === playKey ? null : prev)}
                                 className="absolute inset-0 w-full h-full object-cover"
                               />
-                              {!isPlaying && (
-                                <div className="absolute inset-0 z-10">
-                                  <img src={service.img} alt="" className="absolute inset-0 w-full h-full object-cover" />
-                                  <div className="absolute inset-0 bg-brand-black/40" />
-                                </div>
-                              )}
-                              <button
-                                type="button"
-                                onClick={() => handleMobilePlay(playKey)}
-                                className="absolute inset-0 w-full h-full flex items-center justify-center z-20"
-                                aria-label={isPlaying ? 'Stop video' : `Play ${service.title} video`}
+                              {/* Poster overlay: hide only after video is actually rendering frames */}
+                              <div
+                                className={`absolute inset-0 z-10 transition-opacity duration-500 ${
+                                  mobileVisibleKey === playKey ? 'opacity-0 pointer-events-none' : 'opacity-100'
+                                }`}
                               >
-                                {!isPlaying && (
-                                  <span className="w-14 h-14 rounded-full bg-brand-red/90 flex items-center justify-center shadow-lg">
-                                    <Play size={28} className="text-white ml-1" fill="white" />
-                                  </span>
-                                )}
-                              </button>
-                            </>
+                                <img src={getVideoPoster(service)} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                              </div>
+                            </div>
                           );
                         })()
                       ) : 'slideshow' in service && service.slideshow?.length ? (
