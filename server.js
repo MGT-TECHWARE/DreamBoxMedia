@@ -15,7 +15,23 @@ app.use(cors({
     process.env.ALLOWED_ORIGIN,
   ].filter(Boolean),
 }));
-app.use(express.json({ strict: false }));
+
+app.use((req, res, next) => {
+  if (req.method === 'POST') {
+    let body = '';
+    req.on('data', chunk => { body += chunk; });
+    req.on('end', () => {
+      try {
+        req.body = JSON.parse(body);
+        next();
+      } catch (e) {
+        res.status(400).json({ error: 'Invalid JSON' });
+      }
+    });
+  } else {
+    next();
+  }
+});
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
