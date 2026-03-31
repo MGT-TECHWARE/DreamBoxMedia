@@ -25,7 +25,8 @@ app.use((req, res, next) => {
         req.body = JSON.parse(body);
         next();
       } catch (e) {
-        res.status(400).json({ error: 'Invalid JSON' });
+        console.error('JSON parse failed. Raw body:', JSON.stringify(body), 'Length:', body.length);
+        res.status(400).json({ error: 'Invalid JSON', raw: body.slice(0, 200), length: body.length });
       }
     });
   } else {
@@ -35,6 +36,10 @@ app.use((req, res, next) => {
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
+});
+
+app.post('/api/debug', (req, res) => {
+  res.json({ body: req.body, type: typeof req.body });
 });
 
 const transporter = nodemailer.createTransport({
