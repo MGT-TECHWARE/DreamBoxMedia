@@ -25,8 +25,7 @@ app.use((req, res, next) => {
         req.body = JSON.parse(body);
         next();
       } catch (e) {
-        console.error('JSON parse failed. Raw body:', JSON.stringify(body), 'Length:', body.length);
-        res.status(400).json({ error: 'Invalid JSON', raw: body.slice(0, 200), length: body.length });
+        res.status(400).json({ error: 'Invalid JSON' });
       }
     });
   } else {
@@ -38,16 +37,17 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok' });
 });
 
-app.post('/api/debug', (req, res) => {
-  res.json({ body: req.body, type: typeof req.body });
-});
-
 const transporter = nodemailer.createTransport({
-  service: 'gmail',
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
   auth: {
     user: process.env.GMAIL_USER,
     pass: process.env.GMAIL_APP_PASSWORD,
   },
+  connectionTimeout: 10000,
+  greetingTimeout: 10000,
+  socketTimeout: 10000,
 });
 
 app.post('/api/contact', async (req, res) => {
@@ -75,7 +75,7 @@ app.post('/api/contact', async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error('Email send error:', error);
-    res.status(500).json({ error: 'Failed to send message.' });
+    res.status(500).json({ error: 'Failed to send message.', detail: error.message });
   }
 });
 
