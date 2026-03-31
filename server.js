@@ -15,7 +15,11 @@ app.use(cors({
     process.env.ALLOWED_ORIGIN,
   ].filter(Boolean),
 }));
-app.use(express.json());
+app.use(express.json({ strict: false }));
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
